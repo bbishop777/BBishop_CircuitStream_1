@@ -1,53 +1,29 @@
 ﻿Shader "Custom/InvisibleMask"
 {
-    Properties
+    /*Properties
     {
-        _Color ("Color", Color) = (1,1,1,1)
+        _Color ("Color", Color) = (1,1,1,1)         //Values for Red, Green, Blue, and Alpha
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
-    }
-    SubShader
+    }*/
+    SubShader  //Acts as a funciton         
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 200
+        Tags {"Queue" = "Transparent+1"}
+        //We are adjusting a Render Queue (the order things are rendered).  Whatever we apply this to will put its Queue at
+        //3000 (where transparancy is rendered) plus one, so 3001.  As to order of Queue rendering...the skybox (everything
+        //in the distance like the sky, sun, etc) is at around 1000.  The next highest is the geometry (our cubes, 3D models,
+        //etc.) is at 2000, then there is something called the Alpha Test (similar to transparency but used for testing) set
+        //at around 2500, , then all transparent things are rendered (glass,
+        //clear water, etc) and this is at 3000. The next highest render queue is user interface elements like buttons and
+        //this is around 4000.  This setup allows the developer to use the values in between to assign open render queues. So
+        //in this example we are setting our transparent plane at 3001 and then setting our Anatomy at around 3002 (keeping
+        //these 2 things away from everything else).  The reason we do this is if create a transparent object at 3001 and any
+        //object behind that at 3002 (at a higher render queue, for example) the pass filter will see that object or anything
+        //with a higher render queue.  That is the concept with blends.  But this is just the camera looking thru the geometry
+        //of the transparent object. Beyond its boundaries, any object with a higer render queue will still be seen or any part
+        //of the object beyond the transparent object's boundaries
 
-        CGPROGRAM
-        // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows
-
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
-
-        sampler2D _MainTex;
-
-        struct Input
-        {
-            float2 uv_MainTex;
-        };
-
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
-
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-        // #pragma instancing_options assumeuniformscaling
-        UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
-        UNITY_INSTANCING_BUFFER_END(Props)
-
-        void surf (Input IN, inout SurfaceOutputStandard o)
-        {
-            // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
-        }
-        ENDCG
+        Pass {Blend Zero One}
     }
-    FallBack "Diffuse"
 }
