@@ -15,6 +15,7 @@ public class CactusActions : MonoBehaviour
     private Button _button2;
     private Button _button3;
     private Button _button4;
+    private Button _button5;
 
     // Use this for initialization
     void Awake()
@@ -25,10 +26,12 @@ public class CactusActions : MonoBehaviour
         _button2 = GameObject.Find("Button2a").GetComponent<Button>();
         _button3 = GameObject.Find("Button2b").GetComponent<Button>();
         _button4 = GameObject.Find("Button2c").GetComponent<Button>();
+        _button5 = GameObject.Find("Button2d").GetComponent<Button>();
         _button1.gameObject.SetActive(false);
         _button2.gameObject.SetActive(false);
         _button3.gameObject.SetActive(false);
         _button4.gameObject.SetActive(false);
+        _button5.gameObject.SetActive(false);
         // gameObject.transform.eulerAngles = rot;
     }
 
@@ -70,6 +73,7 @@ public class CactusActions : MonoBehaviour
         _button2.gameObject.SetActive(true);
         _button3.gameObject.SetActive(true);
         _button4.gameObject.SetActive(true);
+        _button5.gameObject.SetActive(true);
     }
 
     public void ChargeWall()
@@ -78,16 +82,27 @@ public class CactusActions : MonoBehaviour
         _button2.gameObject.SetActive(false);
         _button3.gameObject.SetActive(false);
         _button4.gameObject.SetActive(false);
+        _button5.gameObject.SetActive(false);
         anim.SetBool("isCharging", true);
         Invoke("TextChangeForButton", 2);
     }
 
     public void TextChangeForButton ()
     {
-        _button3.gameObject.GetComponentInChildren<Text>().text = "Wow! Mr. Cactus will need to sleep that off! Try again!";
-        _button3.gameObject.SetActive(true);
+        _button4.gameObject.GetComponentInChildren<Text>().text = "Wow! Mr. Cactus will need to sleep that off! Try again!";
+        _button4.gameObject.SetActive(true);
         //m_CBBScript.m_NewMessage = "Wow! Mr. Cactus will need to sleep that off! Try again!";
         //m_CBBScript.UpdateButton2b();
+    }
+
+    public void HitWall()
+    {
+        _button2.gameObject.SetActive(false);
+        _button3.gameObject.SetActive(false);
+        _button4.gameObject.SetActive(false);
+        _button5.gameObject.SetActive(false);
+        anim.SetBool("isHitting", true);
+        Invoke("TextChangeForButton", 2);
     }
 
     private void KeyChecker()
