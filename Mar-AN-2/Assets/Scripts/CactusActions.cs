@@ -16,6 +16,9 @@ public class CactusActions : MonoBehaviour
     private Button _button3;
     private Button _button4;
     private Button _button5;
+    
+    private GameObject _brick;
+    private Vector3 _scaleChanger;
 
     // Use this for initialization
     void Awake()
@@ -27,11 +30,13 @@ public class CactusActions : MonoBehaviour
         _button3 = GameObject.Find("Button2b").GetComponent<Button>();
         _button4 = GameObject.Find("Button2c").GetComponent<Button>();
         _button5 = GameObject.Find("Button2d").GetComponent<Button>();
+        _brick = GameObject.Find("brick433");
         _button1.gameObject.SetActive(false);
         _button2.gameObject.SetActive(false);
         _button3.gameObject.SetActive(false);
         _button4.gameObject.SetActive(false);
         _button5.gameObject.SetActive(false);
+        _scaleChanger = new Vector3(75.9951f, 1f, 1f);
         // gameObject.transform.eulerAngles = rot;
     }
 
@@ -95,6 +100,7 @@ public class CactusActions : MonoBehaviour
         //m_CBBScript.UpdateButton2b();
     }
 
+  
     public void HitWall()
     {
         _button2.gameObject.SetActive(false);
@@ -102,7 +108,14 @@ public class CactusActions : MonoBehaviour
         _button4.gameObject.SetActive(false);
         _button5.gameObject.SetActive(false);
         anim.SetBool("isHitting", true);
+        Invoke("WallPunchBack", 1.5f);
+    }
+    public void WallPunchBack()
+    {
+        _brick.transform.localScale += _scaleChanger;
+        anim.SetBool("isPunched", true);
         Invoke("TextChangeForButton", 2);
+
     }
 
     private void KeyChecker()
