@@ -6,7 +6,10 @@ public class VRHand : MonoBehaviour
 {
     public Animator m_anim;
     public string m_gripName;               //This is part of flagging process (see below).
-                                            //Best practice is to separate public and private variables
+    public string m_triggerName;    //We will get this from our Axis 
+
+    //Best practice is to separate public and private variables
+    private bool m_triggerHeld;     //This will be a flag
     private bool m_gripHeld;                //This is are boolean for our flag (see below).
     private GameObject m_touchingObject;
     private GameObject m_heldObject;
@@ -55,6 +58,22 @@ public class VRHand : MonoBehaviour
             if(m_heldObject)
             {
                 Release();
+            }
+        }
+        if (Input.GetAxis(m_triggerName) > 0.8f && !m_triggerHeld)
+        {
+            m_triggerHeld = true;   //Setting the flag
+            if (m_heldObject)    //If holding an object
+            {
+                m_heldObject.SendMessage("TriggerDown");
+            }
+        }
+        else if (Input.GetAxis(m_triggerName) < 0.8f && m_triggerHeld)
+        {
+            m_triggerHeld = false; //Removing the flag
+            if (m_heldObject)
+            {
+                m_heldObject.SendMessage("TriggerUp");
             }
         }
     }

@@ -67,12 +67,31 @@ public class SimGrab : MonoBehaviour
                 Grab();
             }
         }
-        if(Input.GetKeyUp(KeyCode.Mouse1))  //If release click mouse...
+        if(Input.GetKeyUp(KeyCode.Mouse1))  //If release right mouse button...
         {
             m_anim.SetBool("isGrabbing", false);
             if (m_heldObject)   //Check to see if holding object (if variable is not null but has object in it)
             {
                 Release();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0)) //if holding left mouse button down...
+        {
+            if(m_heldObject)    //If holding an object, we will send a message to that object...if it has a script with the function called,
+                                //it will run
+            {
+                m_heldObject.SendMessage("TriggerDown");    //Similar to BroadCast Message. so will send message to object we are holding and call
+                                                            //TriggerDown which is a function on the script on this object (flashlight)...Broadcast
+                                                            //will send it to the object and all of the children.  SendMessage only communicates
+                                                            //to the object
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            if(m_heldObject)
+            {
+                m_heldObject.SendMessage("TriggerUp");
             }
         }
     }

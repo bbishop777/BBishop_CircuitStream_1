@@ -23,4 +23,17 @@ public class TouchButton : MonoBehaviour
         m_buttonMesh.position = m_upTransform.position; //Onced you exit the Trigger Zone the Button Mesh moves to the Up position. 
         m_buttonReleased.Invoke();
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        m_buttonMesh.position = m_downTransform.position;
+        m_buttonPressed.Invoke();
+        
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        m_buttonMesh.position = m_upTransform.position;
+        m_buttonPressed.Invoke();
+    }
 }

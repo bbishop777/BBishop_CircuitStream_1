@@ -7,7 +7,20 @@ using UnityEngine.UI;
 public class CactusActions : MonoBehaviour
 {
     //public float m_turnSpeed = 15;
+    
+
+    [HideInInspector]
     public CactusButtonBehavior m_CBBScript;
+
+    [HideInInspector]
+    public string m_textForButton;
+
+    [HideInInspector]
+    public bool m_wallExtended;
+
+    public GameObject m_Cam1;
+    public GameObject m_Cam2;
+    public Animator m_wallAnimator;
 
     private Animator anim;
     private Button _button;
@@ -16,6 +29,8 @@ public class CactusActions : MonoBehaviour
     private Button _button3;
     private Button _button4;
     private Button _button5;
+   // private Camera _camera1;
+   //private Camera _camera2;
     
     private GameObject _brick;
     private Vector3 _scaleChanger;
@@ -31,6 +46,9 @@ public class CactusActions : MonoBehaviour
         _button4 = GameObject.Find("Button2c").GetComponent<Button>();
         _button5 = GameObject.Find("Button2d").GetComponent<Button>();
         _brick = GameObject.Find("brick433");
+       //camera1 = GameObject.Find("Main Camera").GetComponent<Camera>();
+       //camera2 = GameObject.Find("2ndCamera").GetComponent<Camera>();
+
         _button1.gameObject.SetActive(false);
         _button2.gameObject.SetActive(false);
         _button3.gameObject.SetActive(false);
@@ -61,16 +79,16 @@ public class CactusActions : MonoBehaviour
 
     }
 
+    public void DisplayWallViewInstructions()
+    {
+        _button1.gameObject.SetActive(true);
+    }
+
     public void SeeWall()
     {
         _button1.gameObject.SetActive(false);
         anim.SetBool("isSeeingWall", true);
         Invoke("DisplaySideInstructions", 5);
-    }
-
-    public void DisplayWallViewInstructions()
-    {
-        _button1.gameObject.SetActive(true);
     }
 
     public void DisplaySideInstructions()
@@ -89,18 +107,10 @@ public class CactusActions : MonoBehaviour
         _button4.gameObject.SetActive(false);
         _button5.gameObject.SetActive(false);
         anim.SetBool("isCharging", true);
-        Invoke("TextChangeForButton", 2);
+        m_textForButton = "Wow! Mr.Cactus will need to sleep that off! Try again!";
+        StartCoroutine(TextChangeForButton(_button4, 2f, m_textForButton, false));
     }
 
-    public void TextChangeForButton ()
-    {
-        _button4.gameObject.GetComponentInChildren<Text>().text = "Wow! Mr. Cactus will need to sleep that off! Try again!";
-        _button4.gameObject.SetActive(true);
-        //m_CBBScript.m_NewMessage = "Wow! Mr. Cactus will need to sleep that off! Try again!";
-        //m_CBBScript.UpdateButton2b();
-    }
-
-  
     public void HitWall()
     {
         _button2.gameObject.SetActive(false);
@@ -112,10 +122,63 @@ public class CactusActions : MonoBehaviour
     }
     public void WallPunchBack()
     {
+        if (m_wallAnimator.enabled)
+        {
+            m_wallAnimator.enabled = !m_wallAnimator.enabled;
+        }
         _brick.transform.localScale += _scaleChanger;
+        m_wallExtended = true;
         anim.SetBool("isPunched", true);
-        Invoke("TextChangeForButton", 2);
+        m_textForButton = "Oh Wow! Mr. Cactus wasn't expecting that! Better let him sleep that off and try again later!";
+        StartCoroutine(TextChangeForButton(_button1, 2f, m_textForButton, m_wallExtended));
+    }
 
+    public void WaveToWall()
+    {
+        _button2.gameObject.SetActive(false);
+        _button3.gameObject.SetActive(false);
+        _button4.gameObject.SetActive(false);
+        _button5.gameObject.SetActive(false);
+        anim.SetBool("isWaving", true);
+        Invoke("MakeWindow", 2f);
+    }
+
+    public IEnumerator TextChangeForButton(Button bttn, float delayTime, string textForButton, bool wallCondition)
+    {
+        yield return new WaitForSeconds(delayTime);
+        if (wallCondition == true)
+        {
+            _brick.transform.localScale -= _scaleChanger;
+            wallCondition = false;
+            if (!m_wallAnimator.enabled)
+            {
+               m_wallAnimator.enabled = m_wallAnimator.enabled;
+            }
+        }
+        bttn.gameObject.GetComponentInChildren<Text>().text = textForButton;
+        bttn.gameObject.SetActive(true);
+        //m_CBBScript.m_NewMessage = "Wow! Mr. Cactus will need to sleep that off! Try again!";
+        //m_CBBScript.UpdateButton2b();
+
+    }
+
+    public void MakeWindow()
+    {
+        transform.Find("body_mesh").gameObject.SetActive(false);
+        transform.Find("CATRigHub001").gameObject.SetActive(false);
+        m_Cam2.SetActive(true);
+        m_Cam1.SetActive(false);
+        m_wallAnimator.SetBool("isWindowForming", true);
+        Invoke("CameraPanToHappyEnd", 2f);
+    }
+
+    public void CameraPanToHappyEnd()
+    {
+        m_Cam2.SetActive(true);
+        m_Cam1.SetActive(false);
+        m_wallAnimator.SetBool("isCameraPanning", true);
+        m_textForButton = "Ahhh! The sunlight feels good to Mr. Cactus!";
+        StartCoroutine(TextChangeForButton(_button4, 2f, m_textForButton, false));
     }
 
     private void KeyChecker()

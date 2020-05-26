@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - See Wall
   - Awaken
+  - Paint
   layers:
   - Default
   - TransparentFX
