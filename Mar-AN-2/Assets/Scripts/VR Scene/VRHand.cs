@@ -5,11 +5,19 @@ using UnityEngine;
 public class VRHand : MonoBehaviour
 {
     public Animator m_anim;
+
     public string m_gripName;               //This is part of flagging process (see below).
     public string m_triggerName;    //We will get this from our Axis 
+    public string m_menuButtonName;
+
+    private Vector3 m_handVelocity;
+    private Vector3 m_oldPosition;
+
+    private Vector3 m_handAngularVelocity;
+    private Vector3 m_oldEulerAngles;
 
     //Best practice is to separate public and private variables
-    private bool m_triggerHeld;     //This will be a flag
+    private bool m_triggerHeld;     //This will be a flag to see it Button GetDown or just Get
     private bool m_gripHeld;                //This is are boolean for our flag (see below).
     private GameObject m_touchingObject;
     private GameObject m_heldObject;
@@ -35,6 +43,14 @@ public class VRHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 tp = transform.position;
+        m_handVelocity = tp - m_oldPosition;
+        m_oldPosition = tp;
+
+        Vector3 te = transform.eulerAngles;
+        m_handAngularVelocity = te - m_oldEulerAngles;
+        m_oldEulerAngles = tp;
+
         if(Input.GetAxis(m_gripName) > 0.5f && !m_gripHeld)  //Due to working with an axis (variable degrees of input) we need to create a flag. A flag is a
                                                             //basically a boolean variable set to true or false based on conditions. If initial conditions are
                                                             //met, we turn it on.  Each input is checked again only to see if the conditions to set the flag
@@ -57,23 +73,31 @@ public class VRHand : MonoBehaviour
             m_anim.SetBool("isGrabbing", false);
             if(m_heldObject)
             {
+                m_heldObject.SendMessage("GrabReleased");
                 Release();
             }
         }
-        if (Input.GetAxis(m_triggerName) > 0.8f && !m_triggerHeld)
+        if (Input.GetAxis(m_triggerName) > 0.8f && !m_triggerHeld) //Checking to see this is first time we see trigger is held so set flag to true
         {
-            m_triggerHeld = true;   //Setting the flag
-            if (m_heldObject)    //If holding an object
+            m_triggerHeld = true;   //Setting the flag to true
+            if (m_heldObject)    //If holding an object exists
             {
-                m_heldObject.SendMessage("TriggerDown");
+                m_heldObject.SendMessage("TriggerDown"); //We then send a message to the object held to activate the script and function
             }
         }
-        else if (Input.GetAxis(m_triggerName) < 0.8f && m_triggerHeld)
+        else if (Input.GetAxis(m_triggerName) < 0.8f && m_triggerHeld) //checking to see if we are starting to let go off the trigger and flag was set that we were
         {
             m_triggerHeld = false; //Removing the flag
             if (m_heldObject)
             {
-                m_heldObject.SendMessage("TriggerUp");
+                m_heldObject.SendMessage("TriggerUp"); //Sending message to object to run function on script called TriggerUp
+            }
+        }
+        if(Input.GetButtonDown(m_menuButtonName))
+        {
+            if(m_heldObject)
+            {
+                m_heldObject.SendMessage("MenuDown");
             }
         }
     }
@@ -81,13 +105,31 @@ public class VRHand : MonoBehaviour
     void Grab()
     {
         m_heldObject = m_touchingObject;
-        m_heldObject.GetComponent<Rigidbody>().isKinematic = true;
+        // m_heldObject.GetComponent<Rigidbody>().isKinematic = true;
+        FixedJoint fx = gameObject.AddComponent<FixedJoint>();
+        fx.connectedBody = m_heldObject.GetComponent<Rigidbody>();
+        fx.breakForce = 5000;
+        fx.breakTorque = 5000;
         m_heldObject.transform.SetParent(transform);
     }
 
     void Release()
     {
-        m_heldObject.GetComponent<Rigidbody>().isKinematic = false;
+        // m_heldObject.GetComponent<Rigidbody>().isKinematic = false;
+        Destroy(GetComponent<FixedJoint>());
+
+        m_heldObject.transform.SetParent(null);
+
+        Rigidbody rb = m_heldObject.GetComponent<Rigidbody>();
+        rb.velocity = m_handVelocity * 60 / rb.mass;
+        rb.angularVelocity = m_handVelocity * 60 / rb.mass;
+
+        m_heldObject = null;
+    }
+
+    private void OnJointBreak(float breakForce)
+    {
+        m_heldObject.SendMessage("GrabReleased");
         m_heldObject.transform.SetParent(null);
         m_heldObject = null;
     }

@@ -451,5 +451,5 @@ InputManager:
     snap: 0
     invert: 1
     type: 2
-    axis: 5
+    axis: 9
     joyNum: 0

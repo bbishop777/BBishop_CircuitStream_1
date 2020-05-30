@@ -57,7 +57,8 @@ public class VRLocomotion : MonoBehaviour
                                                                                            //but we want to just go to ground not any other layer
                                                                                            //so destination is ground layer
         {
-            return hit.point.y;            //return Y height of head to ground if raycast is successful
+            return hit.point.y;            //return Y height of head to ground if raycast is successful..later instructor said this refers to location of 
+                                        //vertex or face of object hit on ground so not height..not sure I understand how we are using this as y coordinate
         }
         return m_vRRig.position.y;      //If raycast to hit ground is not successful, we leave the y alone
     }

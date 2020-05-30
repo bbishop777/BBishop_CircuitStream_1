@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimGrab : MonoBehaviour
+public class SimGrab2 : MonoBehaviour
 {
     public Animator m_anim;  //Reference to our animator which are parameter is "isGrabbing" created in Animation window.
 
     private GameObject m_touchingObject;
     private GameObject m_heldObject;
+
+   //private float m_rotation = 0;
+   
 
     private Vector3 m_handVelocity;
     private Vector3 m_oldPosition;
@@ -15,14 +18,16 @@ public class SimGrab : MonoBehaviour
     private Vector3 m_handAngularVelocity;
     private Vector3 m_oldEulerAngles;
 
+
+
     private void OnTriggerStay(Collider other) //When we are overtop of a trigger for a moment and not over another at same time
     {
         //if(other.GetComponent<Rigidbody>())   //if touched object has a rigidbody then we store it in variable below.Here we look for the Rigidbody but
                                                 //OnTrigger functions run every frame & to find this is processor expensive (looking thru component list of)
-        if(other.tag == "Interactable")         //object touched).However it is more efficient to search for a tag than use GetComponent. We call
-                                                //this tag "Interactable" and we must document that any object tagged with this tag must have a RigidBody and
-                                                //any object tagged this way can be picked up.  You could also add || or && to check for additonal tags or
-                                                //layers or even name so ex: "if(other.tag == "Interactble" || other.name == "Brad" && other.layer == "One""
+        if (other.tag == "Interactable")         //object touched).However it is more efficient to search for a tag than use GetComponent. We call
+                                                 //this tag "Interactable" and we must document that any object tagged with this tag must have a RigidBody and
+                                                 //any object tagged this way can be picked up.  You could also add || or && to check for additonal tags or
+                                                 //layers or even name so ex: "if(other.tag == "Interactble" || other.name == "Brad" && other.layer == "One""
         {
             m_touchingObject = other.gameObject;      //We store this touched object in the variable here
         }
@@ -74,14 +79,14 @@ public class SimGrab : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))  //If right click mouse...
         {
             m_anim.SetBool("isGrabbing", true);
-            if(m_touchingObject)  //Check to see if touching object (variable is not null so has object in it).  We formerly
-                                  //wrote this as "if(m_touchingObject != null)" but the way it is now is shorter. Same for
-                                  //line 42
+            if (m_touchingObject)  //Check to see if touching object (variable is not null so has object in it).  We formerly
+                                   //wrote this as "if(m_touchingObject != null)" but the way it is now is shorter. Same for
+                                   //line 42
             {
                 Grab();
             }
         }
-        if(Input.GetKeyUp(KeyCode.Mouse1))  //If release right mouse button...
+        if (Input.GetKeyUp(KeyCode.Mouse1))  //If release right mouse button...
         {
             m_anim.SetBool("isGrabbing", false);
             if (m_heldObject)   //Check to see if holding object (if variable is not null but has object in it)
@@ -93,8 +98,8 @@ public class SimGrab : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) //if holding left mouse button down...
         {
-            if(m_heldObject)    //If holding an object, we will send a message to that object...if it has a script with the function called,
-                                //it will run
+            if (m_heldObject)    //If holding an object, we will send a message to that object...if it has a script with the function called,
+                                 //it will run
             {
                 m_heldObject.SendMessage("TriggerDown");    //Similar to BroadCast Message. so will send message to object we are holding and call
                                                             //TriggerDown which is a function on the script on this object (flashlight)...Broadcast
@@ -106,14 +111,14 @@ public class SimGrab : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))  //
         {
-            if(m_heldObject)
+            if (m_heldObject)
             {
                 m_heldObject.SendMessage("TriggerUp");
             }
         }
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
-            if(m_heldObject)
+            if (m_heldObject)
             {
                 m_heldObject.SendMessage("MenuDown");
             }
@@ -122,7 +127,7 @@ public class SimGrab : MonoBehaviour
 
     void Grab()
     {
-        if(m_touchingObject.GetComponent<Rigidbody>().mass > 10)
+        if (m_touchingObject.GetComponent<Rigidbody>().mass > 10)
         #region
         //Here we are checking if object's mas is greater than
         //10 kg (22 lbs) then we return or just break out of this
@@ -138,6 +143,9 @@ public class SimGrab : MonoBehaviour
                                                                    //kinematic so no longer effected by forces
         m_heldObject.transform.SetParent(transform); //We then set grabbed object as child to hand so moves with the hand
 
+
+       //eldObject.transform.eulerAngles = new Vector3(m_rotation, m_heldObject.transform.eulerAngles.y, m_heldObject.transform.eulerAngles.z);
+
         //FixedJoint fx = gameObject.AddComponent<FixedJoint>();
         //fx.connectedBody = m_heldObject.GetComponent<Rigidbody>();
         //fx.breakForce = 5000;
@@ -148,9 +156,9 @@ public class SimGrab : MonoBehaviour
     {
         m_heldObject.transform.SetParent(null); //No we break it free from the parent-child relations
         m_heldObject.GetComponent<Rigidbody>().isKinematic = false;//no object is no longer kinematic so it can be
-                                                //effected by other forces (if we didn't do this, when
-                                                //released, it would just float..now we fall down
-        //Destroy(GetComponent<FixedJoint>());
+                                                                   //effected by other forces (if we didn't do this, when
+                                                                   //released, it would just float..now we fall down
+                                                                   //Destroy(GetComponent<FixedJoint>());
 
         //Rigidbody rb = m_heldObject.GetComponent<Rigidbody>();
 
