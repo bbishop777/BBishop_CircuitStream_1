@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="BrondelRemote2" size="0.100000 0.293844" />
+    <ImageTarget name="RokuRemote" size="0.100000 0.328905" />
+    <ImageTarget name="BoilerControlPanel1" size="0.200000 0.235294" />
     <ImageTarget name="CrizalCard" size="0.100000 0.062796" />
     <ImageTarget name="KrogerCard" size="0.100000 0.059396" />
     <ImageTarget name="HawaiiTropicalFarms" size="0.100000 0.145589" />

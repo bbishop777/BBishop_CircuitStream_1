@@ -10,6 +10,8 @@ TagManager:
   - See Wall
   - Awaken
   - Paint
+  - Assistant
+  - Drop Point
   layers:
   - Default
   - TransparentFX
