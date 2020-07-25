@@ -9,7 +9,8 @@ public class SimGrab2 : MonoBehaviour
     private GameObject m_touchingObject;
     private GameObject m_heldObject;
 
-   private float m_rotation = 0;
+    private float m_rotation = 0;
+    private int m_counter;
    
 
     private Vector3 m_handVelocity;
@@ -38,13 +39,20 @@ public class SimGrab2 : MonoBehaviour
 
     void Update()
     {
-        Vector3 tp = transform.position;
-        m_handVelocity = tp - m_oldPosition;
-        m_oldPosition = tp;
+        m_counter++;
+        if (m_counter == 5)
+        {
+            Vector3 tp = transform.position;
+            m_handVelocity = tp - m_oldPosition;
+            m_oldPosition = tp;
 
-        Vector3 te = transform.eulerAngles;
-        m_handAngularVelocity = te - m_oldEulerAngles;
-        m_oldEulerAngles = te;
+            Vector3 te = transform.eulerAngles;
+            m_handAngularVelocity = te - m_oldEulerAngles;
+            m_oldEulerAngles = te;
+
+            m_counter = 0;
+        }
+        
 
         if (Input.GetKeyDown(KeyCode.Mouse1))  //If right click mouse...
         {
@@ -108,8 +116,8 @@ public class SimGrab2 : MonoBehaviour
         // m_heldObject.GetComponent<Rigidbody>().isKinematic = false;
         Destroy(GetComponent<FixedJoint>());
         Rigidbody rb = m_heldObject.GetComponent<Rigidbody>();
-        rb.velocity = m_handVelocity * 500 / rb.mass;
-        rb.angularVelocity = m_handVelocity * 500 / rb.mass;
+        rb.velocity = m_handVelocity * 150 / rb.mass;
+        rb.angularVelocity = m_handVelocity * 150 / rb.mass;
         m_heldObject = null;   //Here we free the variable container
     }
 

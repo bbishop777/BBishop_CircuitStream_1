@@ -8,15 +8,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MiniGameRollerball.unity
     guid: f2c788b275bb84d9184ad96757441298
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI Interface.unity
     guid: adbd1678d7faa44a394ad77c211ce992
   - enabled: 1
     path: Assets/Scenes/VR Scene.unity
     guid: 81321a4254bcb470d8b581cb1ae97812
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Vuforia AR.unity
     guid: 393f9c2a9695a4e58831d440b33e5d7d
+  - enabled: 0
+    path: Assets/ARFoundations.unity
+    guid: fdd9cf8528d13c545a98f2285aa77c74
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: de6aa99c7538c452a9261e22e5305e7e,
       type: 2}

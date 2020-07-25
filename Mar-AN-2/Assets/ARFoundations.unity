@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 1504249482}
   - component: {fileID: 1504249481}
   - component: {fileID: 1504249480}
+  - component: {fileID: 1504249486}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -207,12 +208,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504249479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14795910093787a42a8eaaa488850442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_prefabObject: {fileID: -927199367670048503, guid: 4e0dc0d4b0f0642c3bc99a2c927335e5,
+  m_prefabObject: {fileID: 1265659364751419793, guid: daba691bd158ba74487f47532e253e8d,
     type: 3}
   m_arRaycastManager: {fileID: 0}
 --- !u!114 &1504249481
@@ -283,6 +284,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1504249486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504249479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10053b9627a90d24b92c65f943a1ba8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_prefabObject: {fileID: 3945168615036541385, guid: 63f7abcb34ea0df4a9b3e09ac92e0aa0,
+    type: 3}
+  m_arRaycastManager: {fileID: 1504249482}
 --- !u!1 &1602219222
 GameObject:
   m_ObjectHideFlags: 0

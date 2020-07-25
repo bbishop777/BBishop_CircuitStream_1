@@ -38,8 +38,9 @@ public class CactusActions : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        anim = gameObject.GetComponent<Animator>();
-        _button = GameObject.Find("Button").GetComponent<Button>();
+        anim = gameObject.GetComponent<Animator>(); 
+        _button = GameObject.Find("Button").GetComponent<Button>(); //Was told that GameObject.Find is a very inefficient way to reference another GameObject...will clean this up by making
+                                                                    //these variables public and assigning them in the Unity Inspector
         _button1 = GameObject.Find("Button1").GetComponent<Button>();
         _button2 = GameObject.Find("Button2a").GetComponent<Button>();
         _button3 = GameObject.Find("Button2b").GetComponent<Button>();
