@@ -4,7 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Omar'sUpstairsDemo.unity
+    guid: 643c305645520f8459d32c4d285b3c7a
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: bf0b86077e098ab47839923c28842f38,
       type: 2}

@@ -162,11 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_agentRobbieNavMesh: {fileID: 130903366}
-  m_travelSpeed: 0.0125
+  m_travelSpeed: 10
   m_bitGun: {fileID: 1154361360}
   m_player: {fileID: 478132024}
-  m_spawnTargetPrefab: {fileID: 3945168615036541385, guid: 63f7abcb34ea0df4a9b3e09ac92e0aa0,
-    type: 3}
+  m_spawnTargetPrefab: {fileID: 1024801013}
   m_isSeekingGun: 0
   m_hasGun: 0
   m_needToDropGun: 0
@@ -560,6 +559,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1024801013 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1049943655, guid: 442f59563a060b94198fda784a2cd812,
+    type: 3}
+  m_PrefabInstance: {fileID: 512798576}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1096041231
 PrefabInstance:
   m_ObjectHideFlags: 0
